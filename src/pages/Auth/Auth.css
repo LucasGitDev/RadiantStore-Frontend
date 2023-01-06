@@ -1,0 +1,8 @@
+.title-name {
+  position: relative;
+  top: 0vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  word-wrap: break-word;
+}
