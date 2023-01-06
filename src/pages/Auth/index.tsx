@@ -24,11 +24,12 @@ const themeAuth = createTheme({
 
 function Auth() {
   const location = useLocation();
-  console.log(location);
   return (
     <>
       <BackgroundVideo>
-        <img src={logo} alt="logo" className="logo" width={100} />
+        <Link to="/">
+          <img src={logo} alt="logo" className="logo" width={100} />
+        </Link>
         <Typography className="title-name" fontFamily="VALORANT" variant="h3" noWrap>
           Radiant Store
         </Typography>
