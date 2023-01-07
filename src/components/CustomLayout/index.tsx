@@ -11,7 +11,7 @@ interface ICustomLayoutProps {
 }
 
 export default function CustomLayout({ children, title }: ICustomLayoutProps) {
-  const smDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
+  const smDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
   const theme = useTheme();
 
   const { toggleDrawerOpen } = useDrawerContext();
@@ -44,7 +44,7 @@ export default function CustomLayout({ children, title }: ICustomLayoutProps) {
           </Box>
         </Box>
 
-        <Box flex={1} overflow="auto">
+        <Box flex={1} overflow="auto" >
           {children}
         </Box>
       </Box>

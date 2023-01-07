@@ -16,7 +16,7 @@ function Routing() {
     setDrawerOptions([
       {
         icon: 'home',
-        path: '/home',
+        path: '/',
         label: 'Home',
       },
       {
@@ -39,7 +39,7 @@ function Routing() {
           <Route key={i} element={<Auth />} path={path} />
         ))}
         <Route element={<Logout />} path="/logout" />
-        <Route element={<Navigate to="/home" />} path="*" />
+        <Route element={<Navigate to="/" />} path="*" />
       </Routes>
     </Router>
   );
