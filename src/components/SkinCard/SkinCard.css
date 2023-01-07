@@ -1,0 +1,10 @@
+.skin-card-paper {
+  background-color: #fff;
+  background-image: url('/card-background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
+  filter: blur(2px);
+  -webkit-filter: blur(2px);
+}

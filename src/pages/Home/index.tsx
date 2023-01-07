@@ -2,6 +2,9 @@ import { Divider, Grid, Paper, TextField, Theme, Typography, useMediaQuery } fro
 import CustomLayout from '../../components/CustomLayout';
 import { Box } from '@mui/system';
 import './Home.css';
+import SkinCard from '../../components/SkinCard';
+
+const skins: any[] = [];
 
 const Home = () => {
   const xlDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('xl'));
@@ -32,17 +35,9 @@ const Home = () => {
               alignItems="center"
               justifyContent="center"
             >
-              {Array.from(Array(13)).map((_, index) => (
+              {skins.map((skin, index) => (
                 <Grid item xs={8} sm={6} md={4} lg={4} xl={3} key={index}>
-                  <Paper
-                    sx={{
-                      mb: 2,
-                      height: '50vh',
-                      width: '35vh',
-                      backgroundColor: '#1A2027',
-                      borderRadius: '20px',
-                    }}
-                  ></Paper>
+                  <SkinCard skin={skin} />
                 </Grid>
               ))}
             </Grid>
