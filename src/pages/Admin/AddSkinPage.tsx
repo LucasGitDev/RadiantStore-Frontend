@@ -38,11 +38,19 @@ export default function AddSkinPage() {
             <Box mt={3} gap={1} display="flex" justifyContent="center" alignItems="center" flexDirection="column">
               <Box component="form">
                 <Box marginBottom={2} style={{ width: '40vh' }}>
-                  <TextField fullWidth label="Nome da Skin" variant="outlined" sx={{ input: { color: 'white' } }} />
+                  <TextField
+                    fullWidth
+                    label="Nome da Skin"
+                    variant="outlined"
+                    InputLabelProps={{
+                      style: { color: '#fff' },
+                    }}
+                  />
                 </Box>
                 <Box marginBottom={2} style={{ width: '40vh' }}>
                   <Autocomplete
                     disablePortal
+                    style={{ color: '#fff' }}
                     options={['AK-47', 'M4A1', 'AWP', 'P90', 'UMP-45', 'Glock-18', 'USP-S', 'Desert Eagle', 'P2000']}
                     sx={{ width: '40vh', fontFamily: 'Tungsten-Bold', fontSize: 20, borderColor: 'white' }}
                     renderInput={(params) => (
@@ -51,7 +59,9 @@ export default function AddSkinPage() {
                         fullWidth
                         label="Arma"
                         variant="outlined"
-                        sx={{ input: { color: 'white' } }}
+                        InputLabelProps={{
+                          style: { color: '#fff' },
+                        }}
                       />
                     )}
                   />
@@ -73,16 +83,26 @@ export default function AddSkinPage() {
                         fullWidth
                         label="Raridade"
                         variant="outlined"
-                        sx={{ input: { color: 'white' } }}
+                        InputLabelProps={{
+                          style: { color: '#fff' },
+                        }}
                       />
                     )}
                   />
                 </Box>
                 <Box marginBottom={2} style={{ width: '40vh' }}>
-                  <TextField fullWidth label="Preço" variant="outlined" sx={{ input: { color: 'white' } }} />
+                  <TextField
+                    fullWidth
+                    label="Preço"
+                    variant="outlined"
+                    InputLabelProps={{
+                      style: { color: '#fff' },
+                    }}
+                  />
                 </Box>
               </Box>
               <FormControlLabel
+                style={{ color: '#fff' }}
                 value="start"
                 control={<Switch color="primary" />}
                 label="Disponível para venda?"

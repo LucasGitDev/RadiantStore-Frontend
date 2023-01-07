@@ -19,7 +19,7 @@ export default function CustomLayout({ children, title }: ICustomLayoutProps) {
   return (
     <div className="custom-layout">
       <Box height="100%" display="flex" flexDirection="column" gap={1} mr={!lgDown ? theme.spacing(28) : 0}>
-        <Box padding={1} display="flex" alignItems="center" height={theme.spacing(12)} gap={1}>
+        <Box padding={1} display="flex" alignItems="center" height={theme.spacing(6)} gap={1}>
           {lgDown && (
             <IconButton onClick={toggleDrawerOpen}>
               <Icon>menu</Icon>
