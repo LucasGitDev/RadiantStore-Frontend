@@ -11,16 +11,16 @@ interface ICustomLayoutProps {
 }
 
 export default function CustomLayout({ children, title }: ICustomLayoutProps) {
-  const smDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
   const theme = useTheme();
+  const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
   const { toggleDrawerOpen } = useDrawerContext();
 
   return (
     <div className="custom-layout">
-      <Box height="100%" display="flex" flexDirection="column" gap={1}>
+      <Box height="100%" display="flex" flexDirection="column" gap={1} mr={!lgDown ? theme.spacing(28) : 0}>
         <Box padding={1} display="flex" alignItems="center" height={theme.spacing(12)} gap={1}>
-          {smDown && (
+          {lgDown && (
             <IconButton onClick={toggleDrawerOpen}>
               <Icon>menu</Icon>
             </IconButton>
@@ -44,7 +44,7 @@ export default function CustomLayout({ children, title }: ICustomLayoutProps) {
           </Box>
         </Box>
 
-        <Box flex={1} overflow="auto" >
+        <Box flex={1} overflow="auto">
           {children}
         </Box>
       </Box>
