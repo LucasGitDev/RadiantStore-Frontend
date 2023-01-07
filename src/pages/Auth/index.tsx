@@ -4,23 +4,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Link, useLocation } from 'react-router-dom';
 import BackgroundVideo from '../../components/BackgroundVideo';
 import logo from '../../assets/logo.svg';
-
-const themeAuth = createTheme({
-  palette: {
-    primary: {
-      main: '#fff',
-      dark: '#fff',
-    },
-  },
-  typography: {
-    fontFamily: 'Tungsten-Bold',
-    fontSize: 20,
-    allVariants: {
-      color: '#fff',
-      borderColor: '#fff',
-    },
-  },
-});
+import { TextFieldTheme } from '../../themes/TextFieldTheme';
 
 function Auth() {
   const location = useLocation();
@@ -33,7 +17,7 @@ function Auth() {
         <Typography className="title-name" fontFamily="VALORANT" variant="h3" noWrap>
           Radiant Store
         </Typography>
-        <ThemeProvider theme={themeAuth}>
+        <ThemeProvider theme={TextFieldTheme}>
           {location.pathname === '/auth/login' ? (
             <Box component="form">
               <Box marginBottom={2} style={{ width: '40vh' }}>
