@@ -48,12 +48,12 @@ const ListItemDrawer = ({ to, icon, text, onClick }: IListItemDrawerProps) => {
 };
 export default function CustomDrawer({ children }: { children: React.ReactNode }) {
   const theme = useTheme();
-  const smDown = useMediaQuery(theme.breakpoints.down('sm'));
+  const lgDown = useMediaQuery(theme.breakpoints.down('lg'));
 
   const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext();
   return (
     <>
-      <Drawer open={isDrawerOpen} variant={smDown ? 'temporary' : 'permanent'} onClose={toggleDrawerOpen}>
+      <Drawer open={isDrawerOpen} variant={lgDown ? 'temporary' : 'permanent'} onClose={toggleDrawerOpen}>
         <Box width={theme.spacing(28)} height="100%" display="flex" flexDirection="column">
           <Box
             width="100%"
@@ -88,7 +88,7 @@ export default function CustomDrawer({ children }: { children: React.ReactNode }
           </Box>
         </Box>
       </Drawer>
-      <Box height="100vh" marginLeft={smDown ? 0 : theme.spacing(28)}>
+      <Box height="100vh" marginLeft={lgDown ? 0 : theme.spacing(28)}>
         {children}
       </Box>
     </>
