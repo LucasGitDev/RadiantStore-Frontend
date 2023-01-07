@@ -1,20 +1,93 @@
-import { Divider, Grid, Paper, TextField, Theme, Typography, useMediaQuery } from '@mui/material';
+import {
+  Button,
+  Divider,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  Icon,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Switch,
+  TextField,
+  Theme,
+  useMediaQuery,
+} from '@mui/material';
 import CustomLayout from '../../components/CustomLayout';
 import { Box } from '@mui/system';
 import './Home.css';
 import SkinCard from '../../components/SkinCard';
+import { ChangeEvent, useState } from 'react';
 
 const skins: any[] = [];
 
+const orderOptions = [
+  { value: 'name', label: 'Nome' },
+  { value: 'price', label: 'Preço' },
+  { value: 'rarity', label: 'Raridade' },
+  { value: 'gun', label: 'Arma' },
+];
+
 const Home = () => {
-  const xlDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('xl'));
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
   const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
   const smDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
+  const [order, setOrder] = useState('');
+  const [ascending, setAscending] = useState(true);
+
+  const handleChangeOrder = (event: SelectChangeEvent) => {
+    setOrder(event.target.value as string);
+  };
+
+  const handleChangeAscending = (event: ChangeEvent<HTMLInputElement>) => {
+    setAscending(event.target.checked);
+  };
+
   return (
     <>
       <CustomLayout title="Home">
+        <Box
+          sx={{ zIndex: 1 }}
+          mt={1}
+          mb={1}
+          gap={2}
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <FormControlLabel
+            color="white"
+            control={<Switch defaultChecked value={ascending} onChange={handleChangeAscending} />}
+            label={ascending ? 'Crescente' : 'Decrescente'}
+            value="start"
+            labelPlacement="start"
+            sx={{ color: 'white' }}
+          />
+          <FormControl sx={{ width: '15vh' }}>
+            <InputLabel style={{ color: '#fff' }}>Ordenar por</InputLabel>
+            <Select value={order} onChange={handleChangeOrder} style={{ color: '#fff' }}>
+              {orderOptions.map((option, index) => (
+                <MenuItem key={index} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <TextField
+            label="Search"
+            variant="outlined"
+            InputLabelProps={{
+              style: { color: '#fff' },
+            }}
+            style={{ color: '#fff' }}
+          />
+          <Button variant="contained" color="primary" style={{ borderRadius: 15, height: 50 }}>
+            <Icon>search</Icon>
+          </Button>
+        </Box>
         <Box component="div" overflow="scroll" height="90vh" width="100%">
           <Box
             width={mdDown ? '80%' : !lgDown ? '85%' : '100%'}
