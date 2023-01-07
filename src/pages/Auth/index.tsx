@@ -22,11 +22,30 @@ const loginSchema = Yup.object().shape({
     .required('A senha é obrigatória'),
 });
 
+const registerSchema = Yup.object().shape({
+  firstName: Yup.string().max(100, 'Máximo de 100 caracteres no nome').required('O nome é obrigatório'),
+  lastName: Yup.string().max(100, 'Máximo de 100 caracteres no sobrenome').required('O sobrenome é obrigatório'),
+  email: Yup.string()
+    .email('Formato de email inválido')
+    .max(100, 'Máximo de 100 caracteres no email')
+    .required('O email é obrigatório'),
+  password: Yup.string()
+    .min(6, 'Mínimo 6 caracteres na senha')
+    .max(100, 'Máximo de 100 caracteres na senha')
+    .required('A senha é obrigatória'),
+});
+
 function Auth() {
   const location = useLocation();
   const [error, setError] = useState('');
   const [hidePassword, setHidePassword] = useState(true);
   const [login, setLogin] = useState({
+    email: '',
+    password: '',
+  });
+  const [register, setRegister] = useState({
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
   });
@@ -47,6 +66,25 @@ function Auth() {
         setError(err.message);
       });
   };
+
+  const handleRegister = () => {
+    registerSchema
+      .validate(register)
+      .then((value) => {
+        AuthService.register(value).then((response) => {
+          console.log(response)
+          if (!response) {
+            window.location.href = '/auth/login';
+          }
+          setError(response || '');
+        });
+        setError('');
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
+  };
+
   return (
     <>
       <BackgroundVideo>
@@ -94,16 +132,39 @@ function Auth() {
           ) : (
             <Box component="form">
               <Box marginBottom={2} style={{ width: '40vh' }}>
-                <TextField fullWidth label="Nome" variant="outlined" sx={{ input: { color: 'white' } }} />
+                <TextField
+                  value={register.firstName}
+                  onChange={(e) => setRegister({ ...register, firstName: e.target.value })}
+                  fullWidth
+                  label="Nome"
+                  variant="outlined"
+                  sx={{ input: { color: 'white' } }}
+                />
               </Box>
               <Box marginBottom={2} style={{ width: '40vh' }}>
-                <TextField fullWidth label="Sobrenome" variant="outlined" sx={{ input: { color: 'white' } }} />
+                <TextField
+                  value={register.lastName}
+                  onChange={(e) => setRegister({ ...register, lastName: e.target.value })}
+                  fullWidth
+                  label="Sobrenome"
+                  variant="outlined"
+                  sx={{ input: { color: 'white' } }}
+                />
               </Box>
               <Box marginBottom={2} style={{ width: '40vh' }}>
-                <TextField fullWidth label="Email" variant="outlined" sx={{ input: { color: 'white' } }} />
+                <TextField
+                  value={register.email}
+                  onChange={(e) => setRegister({ ...register, email: e.target.value })}
+                  fullWidth
+                  label="Email"
+                  variant="outlined"
+                  sx={{ input: { color: 'white' } }}
+                />
               </Box>
               <Box marginBottom={2}>
                 <TextField
+                  value={register.password}
+                  onChange={(e) => setRegister({ ...register, password: e.target.value })}
                   fullWidth
                   type={hidePassword ? 'password' : 'text'}
                   label="Senha"
@@ -135,7 +196,7 @@ function Auth() {
           variant="contained"
           color="primary"
           style={{ borderRadius: 15, height: 50 }}
-          onClick={location.pathname === '/auth/login' ? handleLogin : () => {}}
+          onClick={location.pathname === '/auth/login' ? handleLogin : handleRegister}
         >
           <ArrowForwardIcon />
         </Button>
