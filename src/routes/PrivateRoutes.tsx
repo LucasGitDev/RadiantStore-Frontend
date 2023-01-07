@@ -3,7 +3,7 @@ import { getAuthToken } from '../utils/auth';
 
 const PrivateRoutes = () => {
   let token = getAuthToken();
-  return token ? <Outlet /> : <Navigate to="/login" />;
+  return token ? <Outlet /> : <Navigate to="/auth/login" />;
 };
 
 export default PrivateRoutes;

@@ -1,7 +1,15 @@
-import React from 'react';
+import { Typography } from '@mui/material';
+import CustomLayout from '../../components/CustomLayout';
+import './Home.css'
 
 const Home = () => {
-  return <div>Home</div>;
+  return (
+    <>
+      <CustomLayout title='Home'>
+        
+      </CustomLayout>
+    </>
+  );
 };
 
 export default Home;
