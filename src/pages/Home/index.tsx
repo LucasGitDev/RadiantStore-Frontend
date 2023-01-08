@@ -12,15 +12,15 @@ import {
   Switch,
   TextField,
   Theme,
+  Typography,
   useMediaQuery,
 } from '@mui/material';
 import CustomLayout from '../../components/CustomLayout';
 import { Box } from '@mui/system';
 import './Home.css';
 import SkinCard from '../../components/SkinCard';
-import { ChangeEvent, useState } from 'react';
-
-const skins: any[] = [];
+import { ChangeEvent, useEffect, useState } from 'react';
+import { SkinService } from '../../services/skin/SkinService';
 
 const orderOptions = [
   { value: 'name', label: 'Nome' },
@@ -36,6 +36,14 @@ const Home = () => {
 
   const [order, setOrder] = useState('');
   const [ascending, setAscending] = useState(true);
+  const [search, setSearch] = useState('');
+  const [skins, setSkins] = useState([]);
+
+  useEffect(() => {
+    SkinService.getSkinList({}).then((response) => {
+      setSkins(response.data);
+    });
+  }, []);
 
   const handleChangeOrder = (event: SelectChangeEvent) => {
     setOrder(event.target.value as string);
@@ -43,6 +51,17 @@ const Home = () => {
 
   const handleChangeAscending = (event: ChangeEvent<HTMLInputElement>) => {
     setAscending(event.target.checked);
+  };
+
+  const handleSearch = () => {
+    const params = {
+      order: order ? `${order} ${ascending ? 'asc' : 'desc'}` : undefined,
+      name: search,
+    };
+    SkinService.getSkinList(params).then((response) => {
+      console.log(response.data);
+      setSkins(response.data);
+    });
   };
 
   return (
@@ -77,6 +96,8 @@ const Home = () => {
             </Select>
           </FormControl>
           <TextField
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             label="Search"
             variant="outlined"
             InputLabelProps={{
@@ -84,7 +105,7 @@ const Home = () => {
             }}
             style={{ color: '#fff' }}
           />
-          <Button variant="contained" color="primary" style={{ borderRadius: 15, height: 50 }}>
+          <Button onClick={handleSearch} variant="contained" color="primary" style={{ borderRadius: 15, height: 50 }}>
             <Icon>search</Icon>
           </Button>
         </Box>
@@ -108,11 +129,21 @@ const Home = () => {
               alignItems="center"
               justifyContent="center"
             >
-              {skins.map((skin, index) => (
-                <Grid item xs={8} sm={6} md={4} lg={4} xl={3} key={index}>
-                  <SkinCard skin={skin} />
-                </Grid>
-              ))}
+              {skins.length !== 0 ? (
+                skins.map((skin, index) => (
+                  <Grid item xs={8} sm={6} md={4} lg={4} xl={3} key={index}>
+                    <SkinCard skin={skin} />
+                  </Grid>
+                ))
+              ) : (
+                <>
+                  <Box mt={20} height="60vh">
+                    <Typography variant="h4" color="#fff">
+                      Nenhuma skin encontrada :/
+                    </Typography>
+                  </Box>
+                </>
+              )}
             </Grid>
           </Box>
           <Divider light />
