@@ -129,8 +129,8 @@ const Home = () => {
               alignItems="center"
               justifyContent="center"
             >
-              {skins.length !== 0 ? (
-                skins.map((skin, index) => (
+              {skins?.length !== 0 ? (
+                skins?.map((skin, index) => (
                   <Grid item xs={8} sm={6} md={4} lg={4} xl={3} key={index}>
                     <SkinCard skin={skin} />
                   </Grid>
