@@ -72,7 +72,6 @@ function Auth() {
       .validate(register)
       .then((value) => {
         AuthService.register(value).then((response) => {
-          console.log(response)
           if (!response) {
             window.location.href = '/auth/login';
           }

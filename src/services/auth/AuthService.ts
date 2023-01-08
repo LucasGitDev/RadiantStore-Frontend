@@ -25,7 +25,6 @@ const login = async (email: string, password: string): Promise<string | undefine
     const user = await loginUser(email, password);
     setLoginData(user.token, user.user);
   } catch (e) {
-    console.log(e);
     try {
       const user = await loginAdmin(email, password);
       setLoginData(user.token, user.user);
