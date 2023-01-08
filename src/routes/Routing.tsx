@@ -5,6 +5,7 @@ import { useDrawerContext } from '../contexts/DrawerContext';
 import AddSkinPage from '../pages/Admin/AddSkinPage';
 import Auth from '../pages/Auth';
 import Cart from '../pages/Cart';
+import ConfirmEmail from '../pages/ConfirmEmail';
 import Home from '../pages/Home';
 import Logout from '../pages/Logout';
 import PrivateRoutes from './PrivateRoutes';
@@ -48,6 +49,7 @@ function Routing() {
           <Route key={i} element={<Auth />} path={path} />
         ))}
         <Route element={<Logout />} path="/logout" />
+        <Route element={<ConfirmEmail/>} path="/confirm-email/:token" />
         <Route element={<Navigate to="/" />} path="*" />
         {/* future private */}
         <Route element={<CustomDrawer children={<AddSkinPage />} />} path="/admin/add-skin" />
