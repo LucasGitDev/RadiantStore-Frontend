@@ -9,6 +9,7 @@ import ConfirmEmail from '../pages/ConfirmEmail';
 import Home from '../pages/Home';
 import Logout from '../pages/Logout';
 import { isAdmin } from '../utils/auth';
+import AdminRoutes from './AdminRoutes';
 import PrivateRoutes from './PrivateRoutes';
 
 function Routing() {
@@ -43,15 +44,16 @@ function Routing() {
           <Route element={<CustomDrawer children={<Cart />} />} path="/cart" />
         </Route>
 
+        <Route element={<AdminRoutes />}>
+          <Route element={<CustomDrawer children={<AddSkinPage />} />} path="/admin/add-skin" />
+        </Route>
+
         {['/auth/register', '/auth/login'].map((path, i) => (
           <Route key={i} element={<Auth />} path={path} />
         ))}
         <Route element={<Logout />} path="/logout" />
         <Route element={<ConfirmEmail />} path="/confirm-email/:token" />
         <Route element={<CustomDrawer children={<Home />} />} path={'/'} />
-        {/* <Route element={<Navigate to="/" />} path="*" /> */}
-        {/* future private */}
-        <Route element={<CustomDrawer children={<AddSkinPage />} />} path="/admin/add-skin" />
       </Routes>
     </Router>
   );
