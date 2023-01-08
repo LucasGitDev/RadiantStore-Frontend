@@ -42,4 +42,10 @@ export const setLoginData = (token: string, user: IUserData) => {
 export const logout = () => {
   sessionStorage.removeItem(import.meta.env.VITE_WEB_STORAGE_ID);
   document.location.href = '/auth/login';
-}
+};
+
+export const isAdmin = () => {
+  const user = getAuthUserData();
+
+  return user?.role.id === 1;
+};

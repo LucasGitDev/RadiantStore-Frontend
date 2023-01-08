@@ -14,6 +14,7 @@ import {
 import { Box } from '@mui/system';
 import { useDrawerContext } from '../../contexts/DrawerContext';
 import { useMatch, useNavigate, useResolvedPath } from 'react-router-dom';
+import { getAuthUserData } from '../../utils/auth';
 
 interface IListItemDrawerProps {
   to: string;
@@ -49,6 +50,8 @@ const ListItemDrawer = ({ to, icon, text, onClick }: IListItemDrawerProps) => {
 export default function CustomDrawer({ children }: { children: React.ReactNode }) {
   const theme = useTheme();
   const lgDown = useMediaQuery(theme.breakpoints.down('lg'));
+  const user = getAuthUserData();
+  const props = user ? {} : { component: 'a', href: '/auth/login'}
 
   const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext();
   return (
@@ -65,8 +68,8 @@ export default function CustomDrawer({ children }: { children: React.ReactNode }
             gap={2}
           >
             <Avatar sx={{ height: theme.spacing(6), width: theme.spacing(6) }} />
-            <Typography variant="h6" color="#fff" textAlign="center">
-              User Name
+            <Typography {...props} variant="h6" color="#fff" textAlign="center">
+              {user?.firstName || 'Login'}
             </Typography>
           </Box>
 
