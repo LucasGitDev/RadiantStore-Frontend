@@ -45,7 +45,18 @@ const register = async (registerData: IRegisterData) => {
   }
 };
 
+const confirmEmail = async (hash: string) => {
+  try {
+    const endpoint = '/auth/email/confirm/';
+    const { data } = await api.post(endpoint, { hash });
+    return data;
+  } catch (err: any) {
+    return err.response.data.errors.token;
+  }
+};
+
 export const AuthService = {
   login,
   register,
+  confirmEmail,
 };
