@@ -7,6 +7,7 @@ import premium from '../../assets/premium.png';
 import select from '../../assets/select.png';
 import ultra from '../../assets/ultra.png';
 import { isAdmin } from '../../utils/auth';
+import { SkinService } from '../../services/skin/SkinService';
 
 interface ISkinCardProps {
   skin: {
@@ -41,6 +42,12 @@ function choseRarity(rarity: string) {
 }
 
 export default function SkinCard({ skin }: ISkinCardProps) {
+  const handleDelete = () => {
+    SkinService.deleteSkin(skin.id).then(() => {
+      window.location.reload();
+    });
+  };
+
   return (
     <Paper
       sx={{
@@ -70,7 +77,7 @@ export default function SkinCard({ skin }: ISkinCardProps) {
           </CardContent>
           <CardActions>
             {isAdmin() ? (
-              <Button variant="contained" color="primary" style={{ borderRadius: 15, height: 50 }}>
+              <Button onClick={handleDelete} variant="contained" color="primary" style={{ borderRadius: 15, height: 50 }}>
                 <Icon>delete</Icon>
               </Button>
             ) : (
