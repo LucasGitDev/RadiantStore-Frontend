@@ -15,6 +15,16 @@ interface IPaginationOptions {
   limit?: number;
 }
 
+const createSkin = async (skin: any) => {
+  try {
+    const endpoint = '/skins';
+    const { data } = await api.post(endpoint, skin);
+    return data;
+  } catch (e) {
+    return new Error((e as { message: string }).message || 'Erro ao criar o registro.');
+  }
+};
+
 const getSkinList = async (filter?: IFilterOptions) => {
   try {
     const hasLoggedIn = getAuthToken();
@@ -48,4 +58,5 @@ const deleteSkin = async (id: string) => {
 export const SkinService = {
   getSkinList,
   deleteSkin,
+  createSkin,
 };

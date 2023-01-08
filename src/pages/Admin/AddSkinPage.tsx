@@ -1,25 +1,98 @@
-import {
-  Autocomplete,
-  Button,
-  FormControlLabel,
-  Paper,
-  Switch,
-  TextField,
-  ThemeProvider,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Alert, Autocomplete, Button, FormControlLabel, Paper, Switch, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 import { useForm } from 'react-hook-form';
 import CustomLayout from '../../components/CustomLayout';
-import { TextFieldTheme } from '../../themes/TextFieldTheme';
+import * as Yup from 'yup';
+import { useState } from 'react';
+import { api } from '../../services/axios/api';
+import { SkinService } from '../../services/skin/SkinService';
+
+const createSkinSchema = Yup.object().shape({
+  name: Yup.string().max(100, 'Máximo de 100 caracteres no nome').required('O nome é obrigatório'),
+  gun: Yup.string().max(100, 'Máximo de 100 caracteres na arma').required('A arma é obrigatória'),
+  rarity: Yup.string().max(100, 'Máximo de 100 caracteres na raridade').required('A raridade é obrigatória'),
+  available: Yup.boolean().required('A disponibilidade é obrigatória'),
+  price: Yup.number()
+    .nullable()
+    .when('rarity', {
+      is: (rarity: string) => rarity === 'Exclusive Edition',
+      then: Yup.number().required('O preço é obrigatório'),
+    }),
+});
+
+const guns = [
+  'Classic',
+  'Shorty',
+  'Frenzy',
+  'Ghost',
+  'Sheriff',
+  'Stinger',
+  'Spectre',
+  'Bulldog',
+  'Bucky',
+  'Judge',
+  'Guardian',
+  'Phantom',
+  'Vandal',
+  'Marshal',
+  'Operator',
+  'Ares',
+  'Odin',
+  'Knife',
+];
+
+const rarities = ['Deluxe Edition', 'Exclusive Edition', 'Premium Edition', 'Select Edition', 'Ultra Edition'];
 
 export default function AddSkinPage() {
-  const theme = useTheme();
+  const [createSkin, setCreateSkin] = useState<{
+    name: string;
+    gun: string;
+    rarity: string;
+    available: boolean;
+    price: number | undefined | null;
+  }>({
+    name: '',
+    gun: '',
+    rarity: '',
+    available: false,
+    price: null,
+  });
+
+  const [error, setError] = useState<string | null>(null);
 
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (fileData: any) => {
+    if (fileData?.file[0]?.type !== 'image/png') {
+      setError('A imagem deve ser PNG');
+      return;
+    }
+
+    createSkinSchema
+      .validate(createSkin)
+      .then(async (values) => {
+        setError(null);
+        const formData = new FormData();
+        formData.append('file', fileData.file[0]);
+        console.log(fileData);
+
+        const { data } = await api.post('/files/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        const created = await SkinService.createSkin({ ...values, image: data.id });
+        if (created) {
+          window.location.href = '/';
+        }
+      })
+      .catch((err) => {
+        setError(err.message);
+        if (err.message.includes('price')) {
+          setError('O preço é obrigatório');
+          return;
+        }
+      });
   };
 
   return (
@@ -39,6 +112,8 @@ export default function AddSkinPage() {
               <Box component="form">
                 <Box marginBottom={2} style={{ width: '40vh' }}>
                   <TextField
+                    value={createSkin.name}
+                    onChange={(e) => setCreateSkin({ ...createSkin, name: e.target.value })}
                     fullWidth
                     label="Nome da Skin"
                     variant="outlined"
@@ -49,9 +124,10 @@ export default function AddSkinPage() {
                 </Box>
                 <Box marginBottom={2} style={{ width: '40vh' }}>
                   <Autocomplete
+                    onChange={(_, value) => setCreateSkin({ ...createSkin, gun: value as string })}
                     disablePortal
                     style={{ color: '#fff' }}
-                    options={['AK-47', 'M4A1', 'AWP', 'P90', 'UMP-45', 'Glock-18', 'USP-S', 'Desert Eagle', 'P2000']}
+                    options={guns}
                     sx={{ width: '40vh', fontFamily: 'Tungsten-Bold', fontSize: 20, borderColor: 'white' }}
                     renderInput={(params) => (
                       <TextField
@@ -68,14 +144,18 @@ export default function AddSkinPage() {
                 </Box>
                 <Box marginBottom={2} style={{ width: '40vh' }}>
                   <Autocomplete
+                    onChange={(_, value) => {
+                      if (value) {
+                        console.log('setou');
+                        setCreateSkin({ ...createSkin, rarity: value as string });
+
+                        if (value !== 'Exclusive Edition') {
+                          setCreateSkin({ ...createSkin, price: undefined });
+                        }
+                      }
+                    }}
                     disablePortal
-                    options={[
-                      'Deluxe Edition',
-                      'Exclusive Edition',
-                      'Premium Edition',
-                      'Select Edition',
-                      'Ultra Edition',
-                    ]}
+                    options={rarities}
                     sx={{ width: '40vh', fontFamily: 'Tungsten-Bold', fontSize: 20, borderColor: 'white' }}
                     renderInput={(params) => (
                       <TextField
@@ -90,21 +170,32 @@ export default function AddSkinPage() {
                     )}
                   />
                 </Box>
-                <Box marginBottom={2} style={{ width: '40vh' }}>
-                  <TextField
-                    fullWidth
-                    label="Preço"
-                    variant="outlined"
-                    InputLabelProps={{
-                      style: { color: '#fff' },
-                    }}
-                  />
-                </Box>
+                {createSkin?.rarity === 'Exclusive Edition' ? (
+                  <Box marginBottom={2} style={{ width: '40vh' }}>
+                    <TextField
+                      value={createSkin.price}
+                      onChange={(e) => setCreateSkin({ ...createSkin, price: Number(e.target.value) })}
+                      fullWidth
+                      label="Preço"
+                      variant="outlined"
+                      InputLabelProps={{
+                        style: { color: '#fff' },
+                      }}
+                    />
+                  </Box>
+                ) : null}
               </Box>
+              {error ? <Alert severity="error">{error}</Alert> : null}
               <FormControlLabel
                 style={{ color: '#fff' }}
                 value="start"
-                control={<Switch color="primary" />}
+                control={
+                  <Switch
+                    value={createSkin.available}
+                    onChange={(e) => setCreateSkin({ ...createSkin, available: e.target.checked })}
+                    color="primary"
+                  />
+                }
                 label="Disponível para venda?"
                 labelPlacement="start"
               />
