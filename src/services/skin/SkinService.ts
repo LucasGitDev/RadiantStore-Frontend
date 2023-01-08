@@ -1,3 +1,4 @@
+import { getAuthToken } from '../../utils/auth';
 import { api } from '../axios/api';
 
 interface IFilterOptions {
@@ -16,7 +17,8 @@ interface IPaginationOptions {
 
 const getSkinList = async (filter?: IFilterOptions) => {
   try {
-    const endpoint = '/skins/search';
+    const hasLoggedIn = getAuthToken();
+    const endpoint = `/skins/search${hasLoggedIn ? '' : '/not-logged-in'}`;
     const { data } = await api.post(endpoint, filter)
 
     if (data) {

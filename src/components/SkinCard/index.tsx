@@ -6,6 +6,7 @@ import exclusive from '../../assets/exclusive.png';
 import premium from '../../assets/premium.png';
 import select from '../../assets/select.png';
 import ultra from '../../assets/ultra.png';
+import { isAdmin } from '../../utils/auth';
 
 interface ISkinCardProps {
   skin: {
@@ -68,11 +69,17 @@ export default function SkinCard({ skin }: ISkinCardProps) {
             </Box>
           </CardContent>
           <CardActions>
-            <Button variant="contained" color="primary" style={{ borderRadius: 15, height: 50 }}>
-              <Icon>add_shopping_cart</Icon>
-            </Button>
+            {isAdmin() ? (
+              <Button variant="contained" color="primary" style={{ borderRadius: 15, height: 50 }}>
+                <Icon>delete</Icon>
+              </Button>
+            ) : (
+              <Button variant="contained" color="primary" style={{ borderRadius: 15, height: 50 }}>
+                <Icon>add_shopping_cart</Icon>
+              </Button>
+            )}
           </CardActions>
-          <Box display="flex" justifyContent="end" mr={2} >
+          <Box display="flex" justifyContent="end" mr={2}>
             <img src={choseRarity(skin.rarity)} style={{ width: '10%' }} />
           </Box>
         </Box>

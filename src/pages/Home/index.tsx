@@ -149,7 +149,7 @@ const Home = () => {
           <Divider light />
           <Box mb={5} display="flex" flexDirection="column" alignItems="center" justifyContent="center">
             <footer>
-              <span>&copy; Copyright 2022, Lucas Teles. All Rights Reserved</span>
+              <span>&copy; Copyright 2023, Lucas Teles. All Rights Reserved</span>
             </footer>
           </Box>
         </Box>
