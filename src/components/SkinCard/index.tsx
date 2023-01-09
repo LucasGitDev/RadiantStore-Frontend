@@ -23,6 +23,7 @@ interface ISkinCardProps {
       path: string;
     } | null;
   };
+  renderButton?: boolean;
 }
 
 function choseRarity(rarity: string) {
@@ -42,7 +43,7 @@ function choseRarity(rarity: string) {
   }
 }
 
-export default function SkinCard({ skin }: ISkinCardProps) {
+export default function SkinCard({ skin, renderButton }: ISkinCardProps) {
   const handleDelete = () => {
     SkinService.deleteSkin(skin.id).then(() => {
       window.location.reload();
@@ -91,25 +92,29 @@ export default function SkinCard({ skin }: ISkinCardProps) {
             </Box>
           </CardContent>
           <CardActions>
-            {isAdmin() ? (
-              <Button
-                onClick={handleDelete}
-                variant="contained"
-                color="primary"
-                style={{ borderRadius: 15, height: 50 }}
-              >
-                <Icon>delete</Icon>
-              </Button>
-            ) : (
-              <Button
-                onClick={handleAddSkinToCart}
-                variant="contained"
-                color="primary"
-                style={{ borderRadius: 15, height: 50 }}
-              >
-                <Icon>add_shopping_cart</Icon>
-              </Button>
-            )}
+            {renderButton ? (
+              <>
+                {isAdmin() ? (
+                  <Button
+                    onClick={handleDelete}
+                    variant="contained"
+                    color="primary"
+                    style={{ borderRadius: 15, height: 50 }}
+                  >
+                    <Icon>delete</Icon>
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={handleAddSkinToCart}
+                    variant="contained"
+                    color="primary"
+                    style={{ borderRadius: 15, height: 50 }}
+                  >
+                    <Icon>add_shopping_cart</Icon>
+                  </Button>
+                )}
+              </>
+            ) : null}
           </CardActions>
           <Box display="flex" justifyContent="end" mr={2}>
             <img src={choseRarity(skin.rarity)} style={{ width: '10%' }} />
