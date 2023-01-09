@@ -109,7 +109,7 @@ const Home = () => {
             <Icon>search</Icon>
           </Button>
         </Box>
-        <Box component="div" overflow="scroll" height="90vh" width="100%">
+        <Box component="div" height="90vh" width="100%">
           <Box
             width={mdDown ? '80%' : !lgDown ? '85%' : '100%'}
             display="flex"
@@ -132,7 +132,7 @@ const Home = () => {
               {skins?.length !== 0 ? (
                 skins?.map((skin, index) => (
                   <Grid item xs={8} sm={6} md={4} lg={4} xl={3} key={index}>
-                    <SkinCard skin={skin} />
+                    <SkinCard skin={skin} renderButton />
                   </Grid>
                 ))
               ) : (

@@ -17,9 +17,10 @@ Radiant Store se trata de um catálogo de skins para o jogo Valorant. Inicialmen
 - [X]  Ordenação de Skins (por atributo)
 - [X]  Validação dos formulários
 - [X]  Upload de imagem para Skins
-- [ ]  Carrinho de compras
-- [ ]  Fechamento de pedido (conclusão de compra)
+- [X]  Carrinho de compras
+- [X]  Fechamento de pedido (conclusão de compra)
 - [ ]  Painel administrativo (visualição dos pedidos/compras)
+- [ ]  Visualização 'Meus pedidos'
 ## Instalação
 
 Clone o projeto em uma pasta no mesmo nível do backend com o nome frontend (Ou reconfigure docker-compose.yaml no Backend)
