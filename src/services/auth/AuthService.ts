@@ -29,7 +29,6 @@ const login = async (email: string, password: string): Promise<string | undefine
       const user = await loginAdmin(email, password);
       setLoginData(user.token, user.user);
     } catch (e) {
-      logout();
       return 'Erro ao fazer login.';
     }
   }
