@@ -3,7 +3,7 @@ import { Box } from '@mui/system';
 import { useForm } from 'react-hook-form';
 import CustomLayout from '../../components/CustomLayout';
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { api } from '../../services/axios/api';
 import { SkinService } from '../../services/skin/SkinService';
 
@@ -67,6 +67,8 @@ export default function AddSkinPage() {
       return;
     }
 
+    await delay(550);
+
     createSkinSchema
       .validate(createSkin)
       .then(async (values) => {
@@ -93,6 +95,10 @@ export default function AddSkinPage() {
           return;
         }
       });
+  };
+
+  const delay = (mili: number) => {
+    return new Promise((resolve) => setTimeout(resolve, mili));
   };
 
   return (
@@ -145,13 +151,12 @@ export default function AddSkinPage() {
                 <Box marginBottom={2} style={{ width: '40vh' }}>
                   <Autocomplete
                     onChange={(_, value) => {
-                      if (value) {
-                        console.log('setou');
-                        setCreateSkin({ ...createSkin, rarity: value as string });
-
-                        if (value !== 'Exclusive Edition') {
-                          setCreateSkin({ ...createSkin, price: undefined });
-                        }
+                      console.log(`new value ${value}`)
+                      setCreateSkin({ ...createSkin, rarity: value as string });
+                      if (value !== 'Exclusive Edition' && value !== undefined && value !== '') {
+                        setTimeout(() => {
+                          setCreateSkin({ ...createSkin, price: undefined, rarity: value as string });
+                        }, 500);
                       }
                     }}
                     disablePortal
@@ -178,9 +183,6 @@ export default function AddSkinPage() {
                       fullWidth
                       label="Preço"
                       variant="outlined"
-                      InputLabelProps={{
-                        style: { color: '#fff' },
-                      }}
                     />
                   </Box>
                 ) : null}
