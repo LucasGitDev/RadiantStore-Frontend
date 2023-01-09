@@ -6,8 +6,9 @@ import exclusive from '../../assets/exclusive.png';
 import premium from '../../assets/premium.png';
 import select from '../../assets/select.png';
 import ultra from '../../assets/ultra.png';
-import { isAdmin } from '../../utils/auth';
+import { getAuthToken, isAdmin } from '../../utils/auth';
 import { SkinService } from '../../services/skin/SkinService';
+import { OrderService } from '../../services/order/OrderService';
 
 interface ISkinCardProps {
   skin: {
@@ -22,6 +23,7 @@ interface ISkinCardProps {
       path: string;
     } | null;
   };
+  renderButton?: boolean;
 }
 
 function choseRarity(rarity: string) {
@@ -41,11 +43,25 @@ function choseRarity(rarity: string) {
   }
 }
 
-export default function SkinCard({ skin }: ISkinCardProps) {
+export default function SkinCard({ skin, renderButton }: ISkinCardProps) {
   const handleDelete = () => {
     SkinService.deleteSkin(skin.id).then(() => {
       window.location.reload();
     });
+  };
+
+  const handleAddSkinToCart = () => {
+    if (getAuthToken()) {
+      OrderService.addSkinToCart(skin.id).then((res) => {
+        if (res instanceof Error) {
+          alert(res.message);
+        } else {
+          alert('Skin adicionada ao carrinho com sucesso!');
+        }
+      });
+    } else {
+      alert('Você precisa estar logado para adicionar uma skin ao carrinho!');
+    }
   };
 
   return (
@@ -68,7 +84,7 @@ export default function SkinCard({ skin }: ISkinCardProps) {
           <CardContent>
             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
               <Typography gutterBottom variant="subtitle1">
-                {skin.price} VP
+                {skin.price} VP {skin.available ? '| Disponível |' : '| Indisponível  |'}
               </Typography>
               <Typography variant="subtitle1" color="primary">
                 {skin.name}
@@ -76,15 +92,29 @@ export default function SkinCard({ skin }: ISkinCardProps) {
             </Box>
           </CardContent>
           <CardActions>
-            {isAdmin() ? (
-              <Button onClick={handleDelete} variant="contained" color="primary" style={{ borderRadius: 15, height: 50 }}>
-                <Icon>delete</Icon>
-              </Button>
-            ) : (
-              <Button variant="contained" color="primary" style={{ borderRadius: 15, height: 50 }}>
-                <Icon>add_shopping_cart</Icon>
-              </Button>
-            )}
+            {renderButton ? (
+              <>
+                {isAdmin() ? (
+                  <Button
+                    onClick={handleDelete}
+                    variant="contained"
+                    color="primary"
+                    style={{ borderRadius: 15, height: 50 }}
+                  >
+                    <Icon>delete</Icon>
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={handleAddSkinToCart}
+                    variant="contained"
+                    color="primary"
+                    style={{ borderRadius: 15, height: 50 }}
+                  >
+                    <Icon>add_shopping_cart</Icon>
+                  </Button>
+                )}
+              </>
+            ) : null}
           </CardActions>
           <Box display="flex" justifyContent="end" mr={2}>
             <img src={choseRarity(skin.rarity)} style={{ width: '10%' }} />

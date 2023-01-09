@@ -8,7 +8,7 @@ import Cart from '../pages/Cart';
 import ConfirmEmail from '../pages/ConfirmEmail';
 import Home from '../pages/Home';
 import Logout from '../pages/Logout';
-import { isAdmin } from '../utils/auth';
+import { getAuthToken, isAdmin } from '../utils/auth';
 import AdminRoutes from './AdminRoutes';
 import PrivateRoutes from './PrivateRoutes';
 
@@ -29,6 +29,12 @@ function Routing() {
             label: 'Nova Skin',
           }
         : undefined,
+        getAuthToken() && !isAdmin() ?
+        {
+          icon: 'shopping_cart',
+          path: '/cart',
+          label: 'Carrinho',
+        } : undefined,
       {
         icon: 'logout',
         path: '/logout',
