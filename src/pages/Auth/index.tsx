@@ -1,5 +1,5 @@
 import './Auth.css';
-import { Box, Button, createTheme, InputAdornment, TextField, ThemeProvider, Typography } from '@mui/material';
+import { Alert, Box, Button, createTheme, InputAdornment, TextField, ThemeProvider, Typography } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -185,10 +185,8 @@ function Auth() {
           )}
         </ThemeProvider>
         {error !== '' ? (
-          <Box>
-            <Typography className="text" variant="body1" color="#ff4655" noWrap>
-              {error}
-            </Typography>
+          <Box my={3}>
+            <Alert severity="error">{error}</Alert>
           </Box>
         ) : null}
         <Button
